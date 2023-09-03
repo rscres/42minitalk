@@ -19,13 +19,13 @@ PRINTF = ./ft_printf/libftprintf.a
 all: server client
 
 server: $(PRINTF) $(SERVER_OBJ) 
-	$(CC) $(CC_FLAGS) $(SERVER_OBJ) $(LIBS) -o $(SERVER_NAME)
+	$(CC) $(SERVER_OBJ) $(LIBS) -o $(SERVER_NAME)
 
 client: $(PRINTF) $(CLIENT_OBJ) 
 	$(CC) $(CC_FLAGS) $(CLIENT_OBJ) $(LIBS) -o $(CLIENT_NAME)
 
 %.o: %.c
-	$(CC) $(CC_FLAGS) -I. -I./includes/ -O3 -c $< -o $@
+	$(CC) -I. -I./includes/ -O3 -c $< -o $@
 
 $(PRINTF):
 	@make -C ft_printf
