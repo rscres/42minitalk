@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/03 19:04:41 by renato           ###   ########.fr       */
+/*   Updated: 2023/09/03 20:00:22 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	send_bit(int c, int pid)
 {
 	static int	shift;
 
-	// ft_printf("%c", c);
 	if (shift == 8)
 		shift = 0;
 	if (c & (0x01 << shift++))
@@ -28,7 +27,7 @@ int	send_bit(int c, int pid)
 	{
 		kill(pid, SIGUSR1);
 	}
-	usleep(100);
+	usleep(10);
 	return (shift);
 }
 
