@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/03 20:00:22 by renato           ###   ########.fr       */
+/*   Updated: 2023/09/04 19:25:47 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ int	send_bit(int c, int pid)
 		shift = 0;
 	if (c & (0x01 << shift++))
 	{
-		kill(pid, SIGUSR2);
+		if (kill(pid, SIGUSR2) == -1)
+			exit(1);
 	}
 	else
 	{
-		kill(pid, SIGUSR1);
+		if (kill(pid, SIGUSR1) == -1)
+			exit(1);
 	}
 	usleep(10);
 	return (shift);
@@ -45,7 +47,7 @@ void	send_bom(int pid)
 		}
 		else
 		{
-			if (kill(pid, SIGUSR1) == - 1)
+			if (kill(pid, SIGUSR1) == -1)
 				exit (1);
 		}
 		usleep(100);
@@ -99,7 +101,6 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
-	ft_printf("%d\n", strlen(argv[2]));
 	send_str(atoi(argv[1]), argv[2]);
 	while (1)
 		pause();
