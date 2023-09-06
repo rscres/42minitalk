@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/05 19:27:05 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:03:58 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	send_str(int pid, char *msg)
 			free(st_msg);
 		send_bit('\0', st_pid);
 	}
-	if (shift == 7)
+	if (shift == 8)
 	{
 		len++;
 	}
@@ -81,6 +81,7 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
+	ft_printf("%d\n", strlen(argv[2]));
 	send_str(atoi(argv[1]), argv[2]);
 	while (1)
 		pause();

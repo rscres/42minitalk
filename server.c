@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:16:03 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/05 20:48:17 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:13:43 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,28 @@
 #include <string.h>
 #include <strings.h>
 
-int	save_to_str(unsigned int c, int len, int c_pid)
+int	save_to_str(unsigned char c, int len, int c_pid)
 {
-	static char	*str;
-	char		*temp;
-	int			i;
+	static unsigned char	*str;
+	unsigned char			*temp;
+	int						i;
 
-	ft_printf("%c\n", c);
+	// ft_printf("%c\n", c);
 	if (c == '\0')
 	{
 		if (kill(c_pid, SIGUSR1) == -1)
 		{
 			if (str)
 				free(str);
+			ft_printf("free exit\n");
 			str = NULL;
 			exit(1);
 		}
 		ft_printf("\n->%s", str);
-		// ft_printf("free1\n");
 		if (str)
 			free(str);
-		// str = NULL;
+		ft_printf("free1\n");
+		str = NULL;
 		return (1);
 	}
 	if (!str)
@@ -47,17 +48,19 @@ int	save_to_str(unsigned int c, int len, int c_pid)
 	}
 	else
 	{
-		temp = strdup(str);
+		temp = (unsigned char *)strdup((char *)str);
 		if (!temp)
 		{
 			if (str)
 				free(str);
+			ft_printf("free exit2\n");
 			exit(1);
 		}
 		// ft_printf("temp:%s\n", temp);
 		if (str)
 			free(str);
-		str = malloc(sizeof(char) * (len + 1));
+		ft_printf("free2\n");
+		str = malloc(sizeof(unsigned char) * (len + 1));
 		bzero(str, len + 1);
 		i = -1;
 		while (temp[++i])
@@ -65,16 +68,16 @@ int	save_to_str(unsigned int c, int len, int c_pid)
 		str[len] = c;
 		str[len + 1] = '\0';
 		// ft_printf("str:%s\n", str);
-		// ft_printf("free2\n");
 		if (temp)
 			free(temp);
+		ft_printf("free3\n");
 	}
 	return (0);
 }
 
 void	handler(int sig, siginfo_t *info, void *context)
 {
-	static unsigned int	c;
+	static unsigned char	c;
 	static int			i;
 	static int			c_pid;
 	static int			len;
