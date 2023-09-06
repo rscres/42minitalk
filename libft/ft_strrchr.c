@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/23 11:30:12 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 14:08:42 by rseelaen         ###   ########.fr       */
+/*   Created: 2023/04/24 18:43:54 by rseelaen          #+#    #+#             */
+/*   Updated: 2023/05/12 21:33:06 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf/ft_printf.h"
-# include "libft/libft.h"
+char	*ft_strrchr(const char *str, int c)
+{
+	int	i;
 
-#endif //MINITALK_H
+	if (c == '\0')
+		return ((char *)str + ft_strlen(str));
+	if (!ft_isascii(c))
+		return ((char *)str);
+	i = ft_strlen((char *)str);
+	while (i > 0)
+	{
+		if (*(str + i - 1) == c)
+			return ((char *)(str + i - 1));
+		i--;
+	}
+	return (NULL);
+}

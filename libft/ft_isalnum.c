@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/23 11:30:12 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 14:08:42 by rseelaen         ###   ########.fr       */
+/*   Created: 2023/04/24 14:46:08 by rseelaen          #+#    #+#             */
+/*   Updated: 2023/05/12 16:23:49 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf/ft_printf.h"
-# include "libft/libft.h"
-
-#endif //MINITALK_H
+int	ft_isalnum(int a)
+{
+	if ((a >= 65 && a <= 90) || (a >= 97 && a <= 122)
+		|| (a >= 48 && a <= 57))
+		return (8);
+	return (0);
+}

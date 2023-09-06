@@ -6,17 +6,13 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:16:03 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 13:57:50 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 14:13:52 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <signal.h>
-#include <stdio.h>
-#include <string.h>
-#include <strings.h>
 
-int	save_to_str(unsigned char c, int len, int c_pid)
+int	save_to_str(unsigned char c, size_t len, int c_pid)
 {
 	static unsigned char	*str;
 	unsigned char			*temp;
@@ -26,8 +22,7 @@ int	save_to_str(unsigned char c, int len, int c_pid)
 	{
 		if (kill(c_pid, SIGUSR1) == -1)
 		{
-			ft_printf("free exit\n");
-			str = NULL;
+			free(str);
 			exit(1);
 		}
 		ft_printf("\n->%s", str);
@@ -45,22 +40,21 @@ int	save_to_str(unsigned char c, int len, int c_pid)
 	}
 	else
 	{
-		temp = (unsigned char *)strdup((char *)str);
+		temp = (unsigned char *)ft_strdup((char *)str);
 		if (!temp)
 		{
 			if (str)
 				free(str);
 			exit(1);
 		}
-		if (str)
-			free(str);
+		free(str);
 		str = malloc(sizeof(unsigned char) * (len + 2));
 		// if (!str)
 		// {
 		// 	free(temp);
 		// 	exit(1);
 		// }
-		bzero(str, len + 2);
+		ft_bzero(str, len + 2);
 		i = -1;
 		while (temp[++i])
 			str[i] = temp[i];
@@ -77,7 +71,7 @@ void	handler(int sig, siginfo_t *info, void *context)
 	static unsigned char	c;
 	static int				i;
 	static int				c_pid;
-	static int				len;
+	static size_t			len;
 
 	if (c_pid != info->si_pid)
 	{

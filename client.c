@@ -6,12 +6,11 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 13:03:33 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 14:11:53 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <string.h>
 
 int	send_bit(int c, int pid)
 {
@@ -29,24 +28,24 @@ int	send_bit(int c, int pid)
 		if (kill(pid, SIGUSR1) == -1)
 			exit(1);
 	}
-	// usleep(10);
 	return (shift);
 }
 
 void	send_str(int pid, char *msg)
 {
-	static int	st_pid;
-	static int	len;
-	static char	*st_msg;
-	int			shift;
+	static int		st_pid;
+	static size_t	len;
+	static char		*st_msg;
+	size_t			shift;
 
+	shift = 0;
 	if (st_pid == 0)
 		st_pid = pid;
 	if (!st_msg)
-		st_msg = strdup(msg);
-	if (len <= strlen(st_msg))
+		st_msg = ft_strdup(msg);
+	if (len <= ft_strlen(st_msg))
 		shift = send_bit(st_msg[len], st_pid);
-	else if (len == strlen(st_msg) + 1)
+	else if (len == ft_strlen(st_msg) + 1)
 	{
 		if (st_msg)
 			free(st_msg);
@@ -81,8 +80,8 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
-	ft_printf("%d\n", strlen(argv[2]));
-	send_str(atoi(argv[1]), argv[2]);
+	ft_printf("%d\n", ft_strlen(argv[2]));
+	send_str(ft_atoi(argv[1]), argv[2]);
 	while (1)
 		pause();
 	return (0);

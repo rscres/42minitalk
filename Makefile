@@ -12,16 +12,18 @@ SERVER_SRC = server.c
 
 CLIENT_SRC = client.c
 
-LIBS = -Lft_printf -lftprintf
+LIBS = -Lft_printf -lftprintf -Llibft -lft
 
 PRINTF = ./ft_printf/libftprintf.a
 
+LIBFT = ./libft/libft.a
+
 all: server client
 
-server: $(PRINTF) $(SERVER_OBJ) 
+server: $(PRINTF) $(LIBFT) $(SERVER_OBJ) 
 	$(CC) $(CC_FLAGS) $(SERVER_OBJ) $(LIBS) -o $(SERVER_NAME)
 
-client: $(PRINTF) $(CLIENT_OBJ) 
+client: $(PRINTF) $(LIBFT) $(CLIENT_OBJ) 
 	$(CC) $(CC_FLAGS) $(CLIENT_OBJ) $(LIBS) -o $(CLIENT_NAME)
 
 %.o: %.c
@@ -30,13 +32,18 @@ client: $(PRINTF) $(CLIENT_OBJ)
 $(PRINTF):
 	@make -C ft_printf
 
+$(LIBFT):
+	@make -C libft
+
 clean:
 	@make -C ft_printf clean
+	@make -C libft clean
 	rm -rf $(SERVER_OBJ)
 	rm -rf $(CLIENT_OBJ)
 
 fclean: clean
 	@make -C ft_printf fclean
+	@make -C libft fclean
 	rm -rf $(SERVER_NAME)
 	rm -rf $(CLIENT_NAME)
 
