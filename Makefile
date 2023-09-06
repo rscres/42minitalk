@@ -25,7 +25,7 @@ client: $(PRINTF) $(CLIENT_OBJ)
 	$(CC) $(CC_FLAGS) $(CLIENT_OBJ) $(LIBS) -o $(CLIENT_NAME)
 
 %.o: %.c
-	$(CC) -I. -I./includes/ -O3 -c $< -o $@
+	$(CC) $(CC_FLAGS) -I. -I./includes/ -O3 -c $< -o $@
 
 $(PRINTF):
 	@make -C ft_printf

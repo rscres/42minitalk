@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 12:03:58 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:03:33 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	send_bit(int c, int pid)
 		if (kill(pid, SIGUSR1) == -1)
 			exit(1);
 	}
-	usleep(10);
+	// usleep(10);
 	return (shift);
 }
 

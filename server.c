@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:16:03 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 12:13:43 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:57:50 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,24 @@ int	save_to_str(unsigned char c, int len, int c_pid)
 	unsigned char			*temp;
 	int						i;
 
-	// ft_printf("%c\n", c);
-	if (c == '\0')
+	if (c == '\0' && str)
 	{
 		if (kill(c_pid, SIGUSR1) == -1)
 		{
-			if (str)
-				free(str);
 			ft_printf("free exit\n");
 			str = NULL;
 			exit(1);
 		}
 		ft_printf("\n->%s", str);
-		if (str)
-			free(str);
-		ft_printf("free1\n");
+		free(str);
 		str = NULL;
 		return (1);
 	}
 	if (!str)
 	{
-		str = malloc(sizeof(char) * 2);
+		str = malloc(sizeof(unsigned char) * 2);
+		if (!str)
+			exit(1);
 		str[0] = c;
 		str[1] = '\0';
 	}
@@ -53,24 +50,24 @@ int	save_to_str(unsigned char c, int len, int c_pid)
 		{
 			if (str)
 				free(str);
-			ft_printf("free exit2\n");
 			exit(1);
 		}
-		// ft_printf("temp:%s\n", temp);
 		if (str)
 			free(str);
-		ft_printf("free2\n");
-		str = malloc(sizeof(unsigned char) * (len + 1));
-		bzero(str, len + 1);
+		str = malloc(sizeof(unsigned char) * (len + 2));
+		// if (!str)
+		// {
+		// 	free(temp);
+		// 	exit(1);
+		// }
+		bzero(str, len + 2);
 		i = -1;
 		while (temp[++i])
 			str[i] = temp[i];
 		str[len] = c;
 		str[len + 1] = '\0';
-		// ft_printf("str:%s\n", str);
 		if (temp)
 			free(temp);
-		ft_printf("free3\n");
 	}
 	return (0);
 }
@@ -78,9 +75,9 @@ int	save_to_str(unsigned char c, int len, int c_pid)
 void	handler(int sig, siginfo_t *info, void *context)
 {
 	static unsigned char	c;
-	static int			i;
-	static int			c_pid;
-	static int			len;
+	static int				i;
+	static int				c_pid;
+	static int				len;
 
 	if (c_pid != info->si_pid)
 	{
@@ -106,12 +103,17 @@ int	main(void)
 {
 	int					pid;
 	struct sigaction	sa;
+	sigset_t			block_mask;
 
+	sigemptyset(&block_mask);
+	sigaddset(&block_mask, SIGINT);
+	sigaddset(&block_mask, SIGQUIT);
 	pid = getpid();
 	ft_printf("Server PID: %d\n", pid);
 	usleep(0.5 * 10e5);
 	ft_printf("Waiting for message...");
 	sa.sa_flags = SA_SIGINFO;
+	sa.sa_mask = block_mask;
 	sa.sa_sigaction = handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
