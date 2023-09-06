@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/04 19:25:47 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:27:05 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,6 @@ int	send_bit(int c, int pid)
 	return (shift);
 }
 
-void	send_bom(int pid)
-{
-	int	i;
-
-	i = 0;
-	while (i < 8)
-	{
-		if (BOM & (0x01 << i++))
-		{
-			if (kill(pid, SIGUSR2) == -1)
-				exit (1);
-		}
-		else
-		{
-			if (kill(pid, SIGUSR1) == -1)
-				exit (1);
-		}
-		usleep(100);
-	}
-}
-
 void	send_str(int pid, char *msg)
 {
 	static int	st_pid;
@@ -65,12 +44,13 @@ void	send_str(int pid, char *msg)
 		st_pid = pid;
 	if (!st_msg)
 		st_msg = strdup(msg);
-	shift = send_bit(st_msg[len], st_pid);
-	if (len == strlen(st_msg))
+	if (len <= strlen(st_msg))
+		shift = send_bit(st_msg[len], st_pid);
+	else if (len == strlen(st_msg) + 1)
 	{
-		free(st_msg);
-		send_bom(st_pid);
-		exit(0);
+		if (st_msg)
+			free(st_msg);
+		send_bit('\0', st_pid);
 	}
 	if (shift == 7)
 	{
