@@ -6,17 +6,41 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:16:03 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 14:13:52 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/06 19:18:49 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+unsigned char	*add_to_str(unsigned char *str, unsigned char c, size_t len)
+{
+	unsigned char	*temp;
+	int				i;
+
+	temp = (unsigned char *)ft_strdup((char *)str);
+	free(str);
+	if (!temp)
+		exit(1);
+	str = malloc(sizeof(unsigned char) * (len + 2));
+	if (!str)
+	{
+		free(temp);
+		exit(1);
+	}
+	ft_bzero(str, len + 2);
+	i = -1;
+	while (temp[++i])
+		str[i] = temp[i];
+	str[len] = c;
+	str[len + 1] = '\0';
+	if (temp)
+		free(temp);
+	return (str);
+}
+
 int	save_to_str(unsigned char c, size_t len, int c_pid)
 {
 	static unsigned char	*str;
-	unsigned char			*temp;
-	int						i;
 
 	if (c == '\0' && str)
 	{
@@ -39,30 +63,7 @@ int	save_to_str(unsigned char c, size_t len, int c_pid)
 		str[1] = '\0';
 	}
 	else
-	{
-		temp = (unsigned char *)ft_strdup((char *)str);
-		if (!temp)
-		{
-			if (str)
-				free(str);
-			exit(1);
-		}
-		free(str);
-		str = malloc(sizeof(unsigned char) * (len + 2));
-		// if (!str)
-		// {
-		// 	free(temp);
-		// 	exit(1);
-		// }
-		ft_bzero(str, len + 2);
-		i = -1;
-		while (temp[++i])
-			str[i] = temp[i];
-		str[len] = c;
-		str[len + 1] = '\0';
-		if (temp)
-			free(temp);
-	}
+		str = add_to_str(str, c, len);
 	return (0);
 }
 
