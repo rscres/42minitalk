@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/07 15:39:24 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:39:20 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ int	main(int argc, char **argv)
 	send_str(ft_atoi(argv[1]), argv[2]);
 	while (1)
 		sleep(1);
-	return (0);
+	ft_printf("Error: didn't hear back from server.\n");
+	return (1);
 }
