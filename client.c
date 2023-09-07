@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:25:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2023/09/06 14:11:53 by rseelaen         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:39:24 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	send_str(int pid, char *msg)
 {
 	static int		st_pid;
 	static size_t	len;
+	static size_t	total_len;
 	static char		*st_msg;
 	size_t			shift;
 
@@ -43,18 +44,18 @@ void	send_str(int pid, char *msg)
 		st_pid = pid;
 	if (!st_msg)
 		st_msg = ft_strdup(msg);
-	if (len <= ft_strlen(st_msg))
+	if (total_len == 0)
+		total_len = ft_strlen(st_msg);
+	if (len < total_len)
 		shift = send_bit(st_msg[len], st_pid);
-	else if (len == ft_strlen(st_msg) + 1)
+	else if (len == total_len)
 	{
-		if (st_msg)
+		if (shift == 8 && st_msg)
 			free(st_msg);
-		send_bit('\0', st_pid);
+		shift = send_bit('\0', st_pid);
 	}
 	if (shift == 8)
-	{
 		len++;
-	}
 	return ;
 }
 
@@ -80,9 +81,8 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
-	ft_printf("%d\n", ft_strlen(argv[2]));
 	send_str(ft_atoi(argv[1]), argv[2]);
 	while (1)
-		pause();
+		sleep(1);
 	return (0);
 }
