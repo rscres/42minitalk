@@ -1,5 +1,10 @@
 # minitalk
-
+<p align="center">
+	<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/rscres/42minitalk?color=lightblue" />
+	<img alt="Code language count" src="https://img.shields.io/github/languages/count/rscres/42minitalk?color=yellow" />
+	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/rscres/42minitalk?color=blue" />
+	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rscres/42minitalk?color=green" />
+</p>
 ## Overview
 
 Minitalk is a simple client-server communication program implemented in C. It demonstrates Inter-Process Communication (IPC) using UNIX signals (SIGUSR1 and SIGUSR2). The client process sends a string message to the server process, encoding the message bit-by-bit using signals. The server listens for these signals, reconstructs the message, and prints it.
